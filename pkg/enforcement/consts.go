@@ -15,14 +15,17 @@ const (
 	reqAuthKey          = "Authorization"
 )
 
-type packageName string
-type sidecarPath string
+type (
+	packageName string
+	sidecarPath string
+)
 
 const (
 	mainPolicyPackage       packageName = "permit.root"
 	bulkPolicyPackage       packageName = "permit.bulk"
 	allTenantsPolicyPackage packageName = "permit.all_tenants"
 	userPermissionsPackage  packageName = "permit.user_permissions"
+	allowedUrlPackage       packageName = "permit.allowed_url"
 )
 
 const (
@@ -30,6 +33,7 @@ const (
 	bulkPolicy       sidecarPath = "/allowed/bulk"
 	allTenantsPolicy sidecarPath = "/allowed/all-tenants"
 	userPermissions  sidecarPath = "/user-permissions"
+	allowedUrl       sidecarPath = "/allowed_url"
 )
 
 type checkOperationConfig struct {
@@ -53,5 +57,9 @@ var policyMap = map[packageName]checkOperationConfig{
 	userPermissionsPackage: {
 		sidecarPath: userPermissions,
 		opaPath:     strings.Replace(string(userPermissionsPackage), ".", "/", -1),
+	},
+	allowedUrlPackage: {
+		sidecarPath: allowedUrl,
+		opaPath:     strings.Replace(string(allowedUrlPackage), ".", "/", -1),
 	},
 }

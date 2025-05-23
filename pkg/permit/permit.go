@@ -32,6 +32,7 @@ func NewPermit(config config.PermitConfig) *Client {
 func (c *Client) SyncUser(ctx context.Context, user models.UserCreate) (*models.UserRead, error) {
 	return c.Api.Users.SyncUser(ctx, user)
 }
+
 func (c *Client) Check(user enforcement.User, action enforcement.Action, resource enforcement.Resource) (bool, error) {
 	return c.enforcement.Check(user, action, resource)
 }
@@ -56,6 +57,10 @@ func (c *Client) GetUserPermissionsWithOptions(user enforcement.User, opts ...en
 	return c.enforcement.GetUserPermissionsWithOptions(user, opts...)
 }
 
+func (c *Client) CheckUrl(user enforcement.User, url enforcement.URL, method enforcement.Method, tenant enforcement.Tenant, context map[string]string) (bool, error) {
+	return c.enforcement.CheckUrl(user, url, method, tenant, context)
+}
+
 type PermitInterface interface {
 	Check(user enforcement.User, action enforcement.Action, resource enforcement.Resource) (bool, error)
 	BulkCheck(requests ...enforcement.CheckRequest) ([]bool, error)
@@ -64,4 +69,5 @@ type PermitInterface interface {
 	GetUserPermissions(user enforcement.User, tenants ...string) (enforcement.UserPermissions, error)
 	GetUserPermissionsWithOptions(user enforcement.User, opts ...enforcement.UserPermissionsOption) (enforcement.UserPermissions, error)
 	SyncUser(ctx context.Context, user models.UserCreate) (*models.UserRead, error)
+	CheckUrl(user enforcement.User, url enforcement.URL, method enforcement.Method, tenant enforcement.Tenant, context map[string]string) (bool, error)
 }
